@@ -62,19 +62,18 @@ def category_picking_service(previous_results, selected_quartiles, selected_cate
     # This is not the best (or most efficient) way to do it ¯\_(ツ)_/¯
     combinations = []
     for category in selected_categories:
+        # Some categories have "(miscellaneous)" in them, which is a regex special character, this is a safe guard
+        safe_category = category.replace("(", "\(")
+        safe_category = safe_category.replace(")", "\)")
         for quartile in quartiles:
-            combinations.append(f"{category} \({quartile}\)")
+            combinations.append(f"(^|; ){safe_category} \({quartile}\)")
     combinations_regex = "|".join(combinations)
-
-    print(combinations_regex)
 
     winning_journals = relevant_journals_df[
         relevant_journals_df["Categories"].str.contains(combinations_regex, regex=True)
     ]
 
-    winning_articles = bib_df[bib_df["journal"].isin(winning_journals["Title"])][
-        ["doi", "title", "journal"]
-    ]
+    winning_articles = bib_df[bib_df["journal"].isin(winning_journals["Title"])]
     return (winning_journals, winning_articles)
 
 
@@ -86,3 +85,10 @@ def get_quartiles(quartiles_selected):
             quartiles.append(f"Q{i+1}")
 
     return quartiles
+
+
+def create_bib_file_service(winning_articles):
+    df = winning_articles.replace(np.nan, "", regex=True)
+    bib = bibtexparser.bibdatabase.BibDatabase()
+    bib.entries = df.to_dict("records")
+    return bibtexparser.dumps(bib)
