@@ -65,11 +65,8 @@ def category_picking_service(previous_results, selected_quartiles, selected_cate
         for quartile in quartiles:
             combinations.append(f"{category} ({quartile})")
 
-    print(combinations)
-
     def has_category(x):
         journal_categories = x["Categories"].split("; ")
-        print(journal_categories)
         return any(combination in journal_categories for combination in combinations)
 
     winning_journals = relevant_journals_df[
@@ -81,7 +78,6 @@ def category_picking_service(previous_results, selected_quartiles, selected_cate
 
 
 def get_quartiles(quartiles_selected):
-    print(quartiles_selected)
     quartiles = []
     for i, selected in enumerate(quartiles_selected):
         if selected:
