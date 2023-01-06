@@ -1,5 +1,4 @@
 import streamlit as st
-from streamlit import caching
 from services import upload_service, category_picking_service, create_bib_file_service
 
 # Stages
@@ -135,8 +134,6 @@ def results_view():
         file_name="winning_articles.bib",
         mime="application/x-bibtex",
     )
-
-    st.button("Restart", on_click=lambda: caching.clear_cache())
 
 
 if st.session_state["stage"] == UPLOAD_STAGE:
