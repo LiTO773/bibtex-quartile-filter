@@ -31,7 +31,7 @@ def read_bib(file):
 
 def read_scimago(file):
     df = pd.read_csv(file, sep=";", encoding="latin-1")
-    df = df[["Title", "Categories"]]  # Select only the columns we need
+    df = df[["Rank", "Title", "Categories"]]  # Select only the columns we need
     df["Title"] = df["Title"].str.upper()
     return df
 
