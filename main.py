@@ -135,6 +135,8 @@ def results_view():
         mime="application/x-bibtex",
     )
 
+    st.button("Restart", on_click=lambda: set_stage(UPLOAD_STAGE))
+
 
 if st.session_state["stage"] == UPLOAD_STAGE:
     upload_view()
