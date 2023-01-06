@@ -62,15 +62,18 @@ def category_picking_service(previous_results, selected_quartiles, selected_cate
     # This is not the best (or most efficient) way to do it ¯\_(ツ)_/¯
     combinations = []
     for category in selected_categories:
-        # Some categories have "(miscellaneous)" in them, which is a regex special character, this is a safe guard
-        safe_category = category.replace("(", "\(")
-        safe_category = safe_category.replace(")", "\)")
         for quartile in quartiles:
-            combinations.append(f"(^|; ){safe_category} \({quartile}\)")
-    combinations_regex = "|".join(combinations)
+            combinations.append(f"{category} ({quartile})")
+
+    print(combinations)
+
+    def has_category(x):
+        journal_categories = x["Categories"].split("; ")
+        print(journal_categories)
+        return any(combination in journal_categories for combination in combinations)
 
     winning_journals = relevant_journals_df[
-        relevant_journals_df["Categories"].str.contains(combinations_regex, regex=True)
+        relevant_journals_df.apply(has_category, axis=1)
     ]
 
     winning_articles = bib_df[bib_df["journal"].isin(winning_journals["Title"])]
