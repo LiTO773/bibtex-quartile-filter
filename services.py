@@ -90,4 +90,8 @@ def create_bib_file_service(winning_articles):
     df = winning_articles.replace(np.nan, "", regex=True)
     bib = bibtexparser.bibdatabase.BibDatabase()
     bib.entries = df.to_dict("records")
-    return bibtexparser.dumps(bib)
+
+    writer = bibtexparser.bwriter.BibTexWriter()
+    writer.indent = ""  # Bibliometrix can't read files with indentation
+
+    return bibtexparser.dumps(bib, writer=writer)
