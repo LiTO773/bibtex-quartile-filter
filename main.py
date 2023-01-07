@@ -55,6 +55,10 @@ st.set_page_config(
 
 
 def upload_view():
+    st.info(
+        "Exported BibTeX is now compatible with Bibliometrix (WoS and Scopus)",
+        icon="🎉",
+    )
     st.header("File upload")
     bib_file = st.file_uploader("Upload your BibTeX file", type="bib")
     "Upload your Scimago's CSV Ratings. You can find it here: https://www.scimagojr.com/journalrank.php"
