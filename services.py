@@ -93,5 +93,9 @@ def create_bib_file_service(winning_articles):
 
     writer = bibtexparser.bwriter.BibTexWriter()
     writer.indent = ""  # Bibliometrix can't read files with indentation
+    result = bibtexparser.dumps(bib, writer=writer)
+    result = result.replace(
+        " = {", "={"
+    )  # Bibliometrix can't read files with spaces around the equal sign (Scopus)
 
-    return bibtexparser.dumps(bib, writer=writer)
+    return result
